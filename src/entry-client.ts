@@ -1,7 +1,5 @@
 import { createApp } from './main';
 
-const { app, router } = createApp();
+const { app } = createApp();
 
-router.isReady().then(() => {
-  app.mount('#app');
-});
+app.mount('#app');

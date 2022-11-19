@@ -1,30 +1,39 @@
 <template>
   <div>
-    <router-link to="/">Home</router-link>
-    <router-view v-slot="{ Component }">
-      <Suspense>
-        <component :is="Component" />
-      </Suspense>
-    </router-view>
+    Dynamic client only value: <strong>{{ dynamicValue }}</strong>
+  </div>
+  <div>
+    <Suspense timeout="0">
+      <template #default>
+        <Content />
+      </template>
+      <template #fallback>
+        <div>
+          Content loading...
+        </div>
+      </template>
+    </Suspense>
   </div>
 </template>
 
-<style>
-@font-face {
-  font-family: 'Inter';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-}
-.inter {
-  font-family: 'Inter';
-}
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<script>
+import { defineComponent, ref } from 'vue'
+import Content from './Content.vue'
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    Content,
+  },
+  setup() {
+    const dynamicValue = ref('none');
+    setTimeout(() => {
+      dynamicValue.value = 'value';
+    }, 500);
+
+    return {
+      dynamicValue,
+    };
+  }
+})
+</script>
